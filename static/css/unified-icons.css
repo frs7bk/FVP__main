@@ -1,0 +1,553 @@
+/* 
+ * ملف أنماط الأيقونات الموحدة
+ * يستخدم لتوحيد شكل جميع الأيقونات في الموقع وإضافة تأثيرات حركية
+ */
+
+/* النمط الأساسي للأيقونات */
+.eki-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, color;
+  color: var(--primary-icon-color, rgba(129, 140, 248, 0.9));
+}
+
+/* تأثير التحويم للأيقونات */
+.eki-icon:hover {
+  transform: translateY(-2px) scale(1.1);
+  color: var(--icon-hover-color, rgba(99, 102, 241, 1));
+  filter: drop-shadow(0 0 5px rgba(99, 102, 241, 0.5));
+}
+
+/* أيقونات الخدمات */
+.service-icon {
+  font-size: 1.75rem;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, rgba(129, 140, 248, 0.9), rgba(168, 85, 247, 0.9));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+}
+
+.service-icon:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0) 70%);
+  z-index: -1;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+}
+
+.service-icon:hover:after {
+  opacity: 1;
+  transform: scale(1.3);
+}
+
+/* أيقونات معلومات التواصل */
+.contact-icon {
+  font-size: 1.5rem;
+  color: rgba(129, 140, 248, 0.85);
+  width: 40px;
+  height: 40px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-icon:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(99, 102, 241, 0.15);
+  z-index: -1;
+  transform: scale(0);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contact-icon:hover {
+  color: rgba(99, 102, 241, 1);
+}
+
+.contact-icon:hover:after {
+  transform: scale(1);
+}
+
+/* أيقونات التفاعل (المشاهدات، الإعجابات، المشاركة) */
+.interaction-icon {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.interaction-icon.views {
+  color: rgba(129, 140, 248, 0.85);
+}
+
+.interaction-icon.likes {
+  color: rgba(239, 68, 68, 0.85);
+}
+
+.interaction-icon.shares {
+  color: rgba(16, 185, 129, 0.85);
+}
+
+.interaction-icon.comments {
+  color: rgba(245, 158, 11, 0.85);
+}
+
+.interaction-icon:hover {
+  transform: scale(1.2);
+}
+
+/* تأثير نبض للأيقونات التفاعلية */
+.pulse-effect {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* أيقونات الأزرار */
+.btn-icon {
+  margin-right: 0.5rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.btn:hover .btn-icon {
+  transform: translateX(-3px) scale(1.1);
+}
+
+/* أيقونات الميزات */
+.feature-icon {
+  font-size: 1.25rem;
+  width: 3rem;
+  height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background: rgba(99, 102, 241, 0.1);
+  color: rgba(99, 102, 241, 0.9);
+  margin-bottom: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-icon-small {
+  font-size: 0.9rem;
+  color: rgba(129, 140, 248, 0.9);
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover .feature-icon {
+  background: linear-gradient(135deg, rgba(129, 140, 248, 0.2), rgba(168, 85, 247, 0.2));
+  color: rgba(99, 102, 241, 1);
+  transform: translateY(-5px) rotateY(180deg);
+  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.1), 0 4px 6px -2px rgba(99, 102, 241, 0.05);
+}
+
+/* تأثير الدوران */
+.spin-hover:hover {
+  animation: spin-effect 0.5s ease;
+}
+
+@keyframes spin-effect {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* أيقونات المعرض والصور */
+.gallery-icon {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  position: relative;
+  z-index: 10;
+}
+
+.gallery-icon-wrapper {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: rgba(99, 102, 241, 0.85);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-icon-wrapper:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(129, 140, 248, 0.9), rgba(168, 85, 247, 0.9));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.gallery-icon-wrapper:hover:before {
+  opacity: 1;
+}
+
+.gallery-icon-wrapper:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+}
+
+/* أيقونات التنقل */
+.nav-icon {
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover .nav-icon {
+  transform: translateX(-5px);
+}
+
+/* أيقونات الأوقات والتواريخ */
+.time-icon {
+  color: rgba(99, 102, 241, 0.9);
+  margin-right: 0.25rem;
+  transition: all 0.3s ease;
+}
+
+.time-wrapper:hover .time-icon {
+  transform: rotate(30deg);
+}
+
+/* أيقونات تفاصيل الخدمة */
+.revision-icon {
+  color: rgba(129, 140, 248, 0.9);
+  transition: all 0.3s ease;
+}
+
+.format-icon {
+  color: rgba(139, 92, 246, 0.9);
+  transition: all 0.3s ease;
+}
+
+.eki-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.eki-icon:hover {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 3px rgba(99, 102, 241, 0.5));
+}
+
+/* أيقونات العناوين الرئيسية */
+.eki-section-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.eki-section-icon:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(129, 140, 248, 0.2), rgba(168, 85, 247, 0.2));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.eki-section-icon:hover:before {
+  opacity: 1;
+}
+
+.other-services-icon {
+  font-size: 1.2rem;
+  color: rgba(129, 140, 248, 0.9);
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.eki-section-icon:hover .other-services-icon {
+  transform: scale(1.2);
+  color: rgba(99, 102, 241, 1);
+}
+
+/* أنماط أيقونات قسم الخدمات */
+.service-icon-wrapper {
+  position: relative;
+  transition: all 0.4s ease;
+  overflow: hidden;
+}
+
+.service-icon-wrapper:before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(transparent, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1), transparent);
+  animation: rotateGradient 4s linear infinite;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.service-icon-wrapper:hover:before {
+  opacity: 1;
+}
+
+.service-icon {
+  font-size: 1.8rem;
+  color: rgba(129, 140, 248, 0.9);
+  transition: all 0.3s ease;
+}
+
+.service-icon-wrapper:hover .service-icon {
+  transform: scale(1.2);
+  color: rgba(99, 102, 241, 1);
+  filter: drop-shadow(0 0 5px rgba(99, 102, 241, 0.5));
+}
+
+/* أيقونات معلومات التواصل */
+.contact-icon-wrapper {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.contact-icon-wrapper:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+}
+
+.contact-info-icon {
+  font-size: 1.4rem;
+  color: rgba(129, 140, 248, 0.95);
+  transition: all 0.3s ease;
+}
+
+.contact-icon-wrapper:hover .contact-info-icon {
+  color: rgba(99, 102, 241, 1);
+  animation: pulse-subtle 1.5s ease-in-out infinite;
+}
+
+/* بطاقات معلومات التواصل */
+.contact-info-card {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1)); 
+  border-radius: 12px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin-bottom: 15px;
+  border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.contact-info-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(99, 102, 241, 0.2);
+}
+
+.contact-info-card-icon {
+  font-size: 20px;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.contact-info-card:hover .contact-info-card-icon {
+  color: white;
+  transform: scale(1.1);
+}
+
+/* تعديلات خاصة بأيقونة العنوان */
+.fa-map-marker-alt.contact-info-card-icon {
+  font-size: 20px; /* صغيرة مثل أيقونة الهاتف */
+  color: white; /* لون أبيض */
+}
+
+.contact-info-card-content {
+  flex: 1;
+}
+
+.contact-info-card-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: white;
+}
+
+.contact-info-card-text {
+  color: #e5e7eb;
+  font-size: 14px;
+}
+
+/* أيقونة طلب الخدمة */
+.service-request-icon-wrapper {
+  width: 5rem;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+  border-radius: 50%;
+  position: relative;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+  transition: all 0.5s ease;
+}
+
+.service-request-icon-wrapper:before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(transparent, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2), transparent);
+  animation: rotateGradient 4s linear infinite;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.service-request-icon-wrapper:hover:before {
+  opacity: 1;
+}
+
+.service-request-icon {
+  font-size: 2rem;
+  color: rgba(129, 140, 248, 0.9);
+  position: relative;
+  z-index: 2;
+  transition: all 0.5s ease;
+}
+
+.service-request-icon-wrapper:hover .service-request-icon {
+  transform: scale(1.2) rotate(15deg);
+  color: rgba(99, 102, 241, 1);
+}
+
+@keyframes rotateGradient {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* أيقونات أقسام الصفحة */
+.eki-section-icon {
+  position: relative;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse-subtle 2s ease-in-out infinite;
+  overflow: hidden;
+}
+
+.eki-section-icon:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 2px; 
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.6), rgba(168, 85, 247, 0.6)); 
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0.5;
+}
+
+.eki-section-icon i {
+  font-size: 1.4rem;
+  color: rgba(129, 140, 248, 0.95);
+  transition: all 0.3s ease;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    box-shadow: 0 0 8px 2px rgba(99, 102, 241, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 15px 2px rgba(99, 102, 241, 0.4);
+  }
+}
+
+.portfolio-icon {
+  animation: float-icon 3s ease-in-out infinite;
+}
+
+@keyframes float-icon {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* متغيرات CSS للألوان الرئيسية للأيقونات */
+:root {
+  --primary-icon-color: rgba(129, 140, 248, 0.9);
+  --icon-hover-color: rgba(99, 102, 241, 1);
+  --secondary-icon-color: rgba(168, 85, 247, 0.9);
+  --primary-icon-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+  --icon-glow: 0 0 15px rgba(99, 102, 241, 0.7);
+}

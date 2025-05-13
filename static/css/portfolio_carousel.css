@@ -1,0 +1,222 @@
+/**
+ * Portfolio Carousel Styles
+ * تنسيقات متقدمة لكاروسيل المشاريع الرائجة
+ */
+
+/* تحسين التنسيق العام للكاروسيل */
+.portfolio-carousel {
+  position: relative;
+  padding: 20px 0;
+  overflow: hidden;
+  margin-bottom: 3rem;
+}
+
+/* تخصيص بطاقات المشاريع */
+.portfolio-card {
+  transition: all 0.4s ease;
+}
+
+.portfolio-card-inner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transform: translateZ(0);
+  transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* تأثيرات الصورة عند التحويم */
+.portfolio-card-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease, filter 0.5s ease;
+  will-change: transform;
+}
+
+.portfolio-card-inner:hover img {
+  filter: brightness(1.05);
+}
+
+/* طبقة التفاصيل الشفافة */
+.portfolio-card-inner .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 70%);
+  opacity: 0;
+  transition: all 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+}
+
+.portfolio-card-inner:hover .overlay {
+  opacity: 1;
+}
+
+/* تحسين أسهم التنقل */
+.swiper-button-next, 
+.swiper-button-prev {
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 204, 0, 0.9);
+  color: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+}
+
+.swiper-button-next:hover, 
+.swiper-button-prev:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.swiper-button-next:after, 
+.swiper-button-prev:after {
+  font-size: 1rem !important;
+  font-weight: bold;
+}
+
+/* تخصيص نقاط الصفحات */
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background-color: rgba(255, 204, 0, 0.7);
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #ffcc00;
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* تأثيرات نص البطاقة */
+.portfolio-card-inner h3 {
+  margin-bottom: 0.5rem;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.5s ease;
+  transition-delay: 0.1s;
+}
+
+.portfolio-card-inner p,
+.portfolio-card-inner .category-tags {
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.5s ease;
+  transition-delay: 0.2s;
+}
+
+.portfolio-card-inner .portfolio-stats {
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.5s ease;
+  transition-delay: 0.3s;
+}
+
+.portfolio-card-inner:hover h3,
+.portfolio-card-inner:hover p,
+.portfolio-card-inner:hover .category-tags,
+.portfolio-card-inner:hover .portfolio-stats {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* تحسين عرض الفئات */
+.category-tag {
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #ffcc00;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.category-tag:hover {
+  background-color: #ffcc00;
+  color: black;
+}
+
+/* تأثير لزر التفاصيل */
+.btn-view {
+  display: inline-block;
+  background: #ffcc00;
+  color: #000;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+  transform: translateY(20px);
+  opacity: 0;
+  transition-delay: 0.4s;
+}
+
+.portfolio-card-inner:hover .btn-view {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.btn-view:hover {
+  background: #fff;
+  transform: scale(1.05);
+}
+
+/* ضبط تباعد العناصر في الكاروسيل */
+.swiper-container {
+  padding: 1rem 0.5rem;
+  margin: 0 -0.5rem;
+}
+
+.swiper-slide {
+  height: auto;
+  transition: all 0.5s ease;
+}
+
+/* تنسيق أفضل للأجهزة المحمولة */
+@media (max-width: 768px) {
+  .portfolio-card-inner {
+    height: 250px;
+  }
+  
+  .swiper-button-next, 
+  .swiper-button-prev {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .portfolio-card-inner .overlay {
+    padding: 1rem;
+  }
+  
+  .portfolio-card-inner h3 {
+    font-size: 1.1rem;
+  }
+}
+
+/* تنسيق للأجهزة الكبيرة */
+@media (min-width: 1024px) {
+  .portfolio-card-inner {
+    height: 280px;
+  }
+}
+
+/* تأثيرات إضافية للشرائح */
+.swiper-slide-active {
+  z-index: 2;
+}
+
+/* تحسين الشكل العام للكاروسيل */
+#featuredSwiper {
+  overflow: visible;
+}

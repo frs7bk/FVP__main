@@ -1,0 +1,94 @@
+/**
+ * testimonials-animations.css
+ * تأثيرات حركية مخصصة لقسم التقييمات
+ */
+
+/* تأثيرات للتقييمات - محسنة للأداء وسلاسة الظهور */
+.testimonial-card {
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform, opacity, box-shadow;
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(99, 102, 241, 0.3);
+  border-color: rgba(168, 85, 247, 0.6) !important;
+}
+
+/* تأثير توهج للتقييمات عند التحويم */
+.testimonial-card:hover::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 14px;
+  background: transparent;
+  border: 2px solid transparent;
+  border-image: linear-gradient(45deg, rgba(99, 102, 241, 0.6), rgba(168, 85, 247, 0.6)) 1;
+  opacity: 0;
+  animation: testimonialGlow 2s ease-in-out infinite;
+}
+
+@keyframes testimonialGlow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+/* تأثير ظهور تدريجي مع تحرك للأعلى */
+.testimonial-card-slide-in {
+  animation: testimonialSlideIn 0.8s forwards cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes testimonialSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* تأثير تحرك للنجوم */
+.rating-display i {
+  display: inline-block;
+  transform: scale(0);
+  animation: starPop 0.5s forwards;
+}
+
+.rating-display i:nth-child(1) { animation-delay: 0.1s; }
+.rating-display i:nth-child(2) { animation-delay: 0.2s; }
+.rating-display i:nth-child(3) { animation-delay: 0.3s; }
+.rating-display i:nth-child(4) { animation-delay: 0.4s; }
+.rating-display i:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes starPop {
+  0% {
+    transform: scale(0) rotate(-15deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+/* تحسين مظهر الحقول الزجاجية */
+.testimonial-glass-input {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+.testimonial-glass-input:focus {
+  transform: translateY(-2px) !important;
+}

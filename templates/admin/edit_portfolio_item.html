@@ -1,0 +1,397 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}تعديل مشروع | لوحة التحكم{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    {% include 'admin/sidebar.html' %}
+    
+    <!-- Main Content -->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">
+          <i class="fas fa-edit me-2"></i>
+          تعديل مشروع
+        </h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <a href="{{ url_for('admin_portfolio_management') }}" class="btn btn-sm btn-secondary">
+            <i class="fas fa-arrow-right me-1"></i>
+            العودة إلى معرض الأعمال
+          </a>
+        </div>
+      </div>
+
+      {% include 'admin/flash_messages.html' %}
+
+      <!-- Edit Portfolio Item Form -->
+      <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+          <form id="editPortfolioForm" action="{{ url_for('update_portfolio_item', portfolio_id=item.id) }}" method="POST" enctype="multipart/form-data" class="row g-3" data-loading-animation="true">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            
+            <div class="col-md-6">
+              <label for="title" class="form-label">عنوان المشروع *</label>
+              <input type="text" class="form-control bg-dark text-white border-secondary" id="title" name="title" value="{{ item.title }}" required>
+            </div>
+            
+            <div class="col-md-6">
+              <label for="title_en" class="form-label">عنوان المشروع (بالإنجليزية)</label>
+              <input type="text" class="form-control bg-dark text-white border-secondary" id="title_en" name="title_en" value="{{ item.title_en or '' }}">
+            </div>
+            
+            <div class="col-md-6">
+              <label for="category" class="form-label">الفئة *</label>
+              <input type="text" class="form-control bg-dark text-white border-secondary" id="category" name="category" value="{{ item.category }}" required>
+              <div class="form-text text-muted">
+                مثال: تصميم، برمجة، تسويق، الخ.
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <label for="link" class="form-label">رابط المشروع</label>
+              <input type="url" class="form-control bg-dark text-white border-secondary" id="link" name="link" value="{{ item.link or '' }}">
+            </div>
+            
+            <div class="col-12">
+              <label for="description" class="form-label">وصف المشروع *</label>
+              <textarea class="form-control bg-dark text-white border-secondary" id="description" name="description" rows="4" required>{{ item.description }}</textarea>
+            </div>
+            
+            <div class="col-12">
+              <label for="description_en" class="form-label">وصف المشروع (بالإنجليزية)</label>
+              <textarea class="form-control bg-dark text-white border-secondary" id="description_en" name="description_en" rows="4">{{ item.description_en or '' }}</textarea>
+            </div>
+            
+            <div class="col-12">
+              <label class="form-label">الصورة الحالية</label>
+              <div class="mb-3">
+                <img src="{{ item.image_url }}" class="img-thumbnail" style="max-height: 200px;" alt="{{ item.title }}">
+              </div>
+            </div>
+            
+            <div class="col-12">
+              <label for="image" class="form-label">تغيير الصورة (اختياري)</label>
+              <input class="form-control bg-dark text-white border-secondary" type="file" id="image" name="image" accept="image/*">
+              <div class="form-text text-muted">
+                اترك هذا الحقل فارغًا إذا كنت لا ترغب في تغيير الصورة الحالية.
+              </div>
+            </div>
+            
+            <!-- إضافة قسم الفيديو -->
+            <div class="col-12 mt-3">
+              <h5 class="border-bottom pb-2">الفيديو</h5>
+            </div>
+            
+            {% if item.video_type %}
+            <div class="col-12 mb-3">
+              <div class="alert alert-info">
+                <strong>الفيديو الحالي:</strong>
+                {% if item.video_type == 'external' %}
+                  <span>فيديو خارجي: {{ item.video_url }}</span>
+                {% elif item.video_type == 'local' %}
+                  <span>فيديو محلي: {{ item.video_file }}</span>
+                {% endif %}
+              </div>
+              {% if item.video_type == 'local' and item.video_file %}
+              <div class="my-2">
+                <video controls style="max-width: 100%; max-height: 200px;">
+                  <source src="{{ item.video_file }}" type="video/mp4">
+                  متصفحك لا يدعم عرض الفيديو.
+                </video>
+              </div>
+              {% endif %}
+            </div>
+            {% endif %}
+
+            <div class="col-md-6 mt-2">
+              <label for="video_type" class="form-label">نوع الفيديو</label>
+              <select class="form-select bg-dark text-white border-secondary" id="video_type" name="video_type">
+                <option value="" {% if not item.video_type %}selected{% endif %}>بدون فيديو</option>
+                <option value="local" {% if item.video_type == 'local' %}selected{% endif %}>تحميل فيديو من جهازك</option>
+                <option value="external" {% if item.video_type == 'external' %}selected{% endif %}>إضافة رابط فيديو خارجي (يوتيوب، فيميو، إلخ)</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 mt-2 video-field" id="video_url_container" style="display: {% if item.video_type == 'external' %}block{% else %}none{% endif %};">
+              <label for="video_url" class="form-label">رابط الفيديو</label>
+              <input type="url" class="form-control bg-dark text-white border-secondary" id="video_url" name="video_url" placeholder="https://youtu.be/example or https://vimeo.com/example" value="{{ item.video_url or '' }}">
+              <div class="form-text text-muted">
+                أدخل رابط الفيديو من يوتيوب أو فيميو أو أي منصة أخرى تدعم التضمين.
+              </div>
+            </div>
+
+            <div class="col-12 mt-2 video-field" id="video_file_container" style="display: {% if item.video_type == 'local' %}block{% else %}none{% endif %};">
+              <label for="video_file" class="form-label">ملف الفيديو <span class="text-muted">(اترك فارغاً للاحتفاظ بالفيديو الحالي)</span></label>
+              <div class="custom-file-upload-wrapper">
+                <input class="form-control bg-dark text-white border-secondary" type="file" id="video_file" name="video_file" accept="video/mp4,video/webm,video/ogg">
+                <div class="mt-2 progress d-none" id="video-upload-progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                </div>
+                <div class="form-text text-muted">
+                  الأنواع المدعومة: MP4, WebM, Ogg. الحجم الأقصى: 100 ميجابايت.
+                </div>
+              </div>
+              <div id="video-preview-container" class="mt-3 d-none">
+                <div class="card bg-dark border-secondary">
+                  <div class="card-header bg-dark text-white">
+                    معاينة الفيديو الجديد
+                  </div>
+                  <div class="card-body">
+                    <video id="video-preview" controls style="max-width: 100%; max-height: 250px;"></video>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 mt-2 video-field" id="video_thumbnail_container" style="display: {% if item.video_type %}block{% else %}none{% endif %};">
+              <label for="video_thumbnail" class="form-label">صورة مصغرة للفيديو <span class="text-muted">(اختياري)</span></label>
+              {% if item.video_thumbnail %}
+              <div class="mb-2">
+                <img src="{{ item.video_thumbnail }}" alt="الصورة المصغرة الحالية" class="img-thumbnail" style="max-height: 100px;">
+              </div>
+              {% endif %}
+              <input class="form-control bg-dark text-white border-secondary" type="file" id="video_thumbnail" name="video_thumbnail" accept="image/*">
+              <div id="thumbnail-preview-container" class="mt-2 d-none">
+                <img id="thumbnail-preview" class="img-fluid img-thumbnail" alt="معاينة الصورة المصغرة" style="max-height: 100px;">
+              </div>
+              <div class="form-text text-muted">
+                اترك فارغاً للاحتفاظ بالصورة المصغرة الحالية أو استخدام صورة المشروع الرئيسية.
+              </div>
+            </div>
+            
+            <div class="col-12 mt-4">
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-1"></i>
+                حفظ التغييرات
+              </button>
+              <a href="{{ url_for('admin_portfolio_management') }}" class="btn btn-secondary ms-2">
+                <i class="fas fa-times me-1"></i>
+                إلغاء
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // التعامل مع اختيار نوع الفيديو
+    const videoTypeSelect = document.getElementById('video_type');
+    const videoUrlContainer = document.getElementById('video_url_container');
+    const videoFileContainer = document.getElementById('video_file_container');
+    const videoThumbnailContainer = document.getElementById('video_thumbnail_container');
+    const videoFileInput = document.getElementById('video_file');
+    const videoThumbnailInput = document.getElementById('video_thumbnail');
+    const videoPreviewContainer = document.getElementById('video-preview-container');
+    const videoPreview = document.getElementById('video-preview');
+    const thumbnailPreviewContainer = document.getElementById('thumbnail-preview-container');
+    const thumbnailPreview = document.getElementById('thumbnail-preview');
+    const videoUploadProgress = document.getElementById('video-upload-progress');
+    
+    // وظيفة لإظهار/إخفاء حقول الفيديو بناءً على النوع المختار
+    function handleVideoTypeChange() {
+      console.log("Video type changed to: " + videoTypeSelect.value);
+      
+      // إخفاء جميع حقول الفيديو أولاً
+      videoUrlContainer.style.display = 'none';
+      videoFileContainer.style.display = 'none';
+      videoThumbnailContainer.style.display = 'none';
+      
+      // إعادة تعيين معاينة الفيديو الجديد
+      if (videoPreviewContainer) {
+        videoPreviewContainer.classList.add('d-none');
+      }
+      
+      // إعادة تعيين معاينة الصورة المصغرة الجديدة
+      if (thumbnailPreviewContainer) {
+        thumbnailPreviewContainer.classList.add('d-none');
+      }
+      
+      // إظهار الحقول المناسبة بناءً على نوع الفيديو المختار
+      if (videoTypeSelect.value === 'external') {
+        videoUrlContainer.style.display = 'block';
+        videoThumbnailContainer.style.display = 'block';
+      } else if (videoTypeSelect.value === 'local') {
+        videoFileContainer.style.display = 'block';
+        videoThumbnailContainer.style.display = 'block';
+      }
+    }
+    
+    // وظيفة معاينة الفيديو المختار
+    function handleVideoFileChange(e) {
+      const file = e.target.files[0];
+      if (!file) {
+        videoPreviewContainer.classList.add('d-none');
+        return;
+      }
+      
+      // التحقق من حجم الملف (100 ميجابايت كحد أقصى)
+      const maxSize = 100 * 1024 * 1024; // 100 ميجابايت
+      if (file.size > maxSize) {
+        alert('حجم الفيديو كبير جدًا. يجب أن يكون حجم الفيديو أقل من 100 ميجابايت.');
+        e.target.value = ''; // إعادة تعيين حقل الملف
+        return;
+      }
+      
+      // التحقق من نوع الملف
+      const videoFormats = ['video/mp4', 'video/webm', 'video/ogg'];
+      if (!videoFormats.includes(file.type)) {
+        alert('نوع الفيديو غير مدعوم. الأنواع المدعومة هي: MP4, WebM, Ogg.');
+        e.target.value = ''; // إعادة تعيين حقل الملف
+        return;
+      }
+      
+      // إنشاء رابط للفيديو للمعاينة
+      const videoURL = URL.createObjectURL(file);
+      videoPreview.src = videoURL;
+      videoPreviewContainer.classList.remove('d-none');
+      
+      // تشغيل الفيديو (بصوت مكتوم)
+      videoPreview.muted = true;
+      videoPreview.onloadedmetadata = function() {
+        // التحقق من مدة الفيديو - لا تزيد عن 5 دقائق مثلاً
+        if (videoPreview.duration > 300) { // 5 دقائق (300 ثانية)
+          alert('الفيديو طويل جدًا. يجب أن تكون مدة الفيديو أقل من 5 دقائق.');
+          e.target.value = ''; // إعادة تعيين حقل الملف
+          videoPreviewContainer.classList.add('d-none');
+          return;
+        }
+      };
+    }
+    
+    // وظيفة معاينة الصورة المصغرة المختارة
+    function handleThumbnailChange(e) {
+      const file = e.target.files[0];
+      if (!file) {
+        thumbnailPreviewContainer.classList.add('d-none');
+        return;
+      }
+      
+      // التحقق من نوع الملف
+      if (!file.type.startsWith('image/')) {
+        alert('الملف المختار ليس صورة.');
+        e.target.value = ''; // إعادة تعيين حقل الملف
+        return;
+      }
+      
+      // التحقق من حجم الصورة
+      const maxSize = 5 * 1024 * 1024; // 5 ميجابايت
+      if (file.size > maxSize) {
+        alert('حجم الصورة كبير جدًا. يجب أن يكون حجم الصورة أقل من 5 ميجابايت.');
+        e.target.value = ''; // إعادة تعيين حقل الملف
+        return;
+      }
+      
+      // إنشاء رابط للصورة للمعاينة
+      const thumbnailURL = URL.createObjectURL(file);
+      thumbnailPreview.src = thumbnailURL;
+      thumbnailPreviewContainer.classList.remove('d-none');
+    }
+    
+    // وظيفة للتحقق من صحة رابط الفيديو
+    function validateVideoUrl(url) {
+      // التحقق من أن الرابط هو من يوتيوب أو فيميو
+      const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)/;
+      const vimeoRegex = /^(https?:\/\/)?(www\.)?(vimeo\.com\/)/;
+      
+      if (youtubeRegex.test(url) || vimeoRegex.test(url)) {
+        return true;
+      }
+      
+      return false;
+    }
+    
+    // وظيفة التحقق من النموذج قبل إرساله
+    function validateForm(e) {
+      const videoType = videoTypeSelect.value;
+      let isValid = true;
+      let errorMessage = '';
+      
+      // التحقق من رابط الفيديو الخارجي
+      if (videoType === 'external') {
+        const videoUrl = document.getElementById('video_url').value.trim();
+        if (!videoUrl) {
+          isValid = false;
+          errorMessage += '- يجب إدخال رابط الفيديو\n';
+        } else if (!validateVideoUrl(videoUrl)) {
+          isValid = false;
+          errorMessage += '- رابط الفيديو غير صالح. يجب أن يكون رابط من يوتيوب أو فيميو\n';
+        }
+      }
+      
+      // التحقق من حجم ملف الفيديو المحلي
+      if (videoType === 'local' && videoFileInput.files.length > 0) {
+        const file = videoFileInput.files[0];
+        const maxSize = 100 * 1024 * 1024; // 100 ميجابايت
+        
+        if (file.size > maxSize) {
+          isValid = false;
+          errorMessage += `- حجم ملف الفيديو (${Math.round(file.size / (1024 * 1024))} ميجابايت) كبير جدًا.\n  يجب أن يكون حجم الفيديو أقل من 100 ميجابايت.\n`;
+        }
+      }
+      
+      // التحقق من حجم الصورة المصغرة
+      const thumbnailInput = document.getElementById('video_thumbnail');
+      if (thumbnailInput && thumbnailInput.files.length > 0) {
+        const file = thumbnailInput.files[0];
+        const maxSize = 5 * 1024 * 1024; // 5 ميجابايت
+        
+        if (file.size > maxSize) {
+          isValid = false;
+          errorMessage += `- حجم ملف الصورة المصغرة (${Math.round(file.size / (1024 * 1024))} ميجابايت) كبير جدًا.\n  يجب أن يكون حجم الصورة أقل من 5 ميجابايت.\n`;
+        }
+      }
+      
+      // إظهار الأخطاء إذا وجدت
+      if (!isValid) {
+        e.preventDefault();
+        alert('الرجاء تصحيح الأخطاء التالية:\n' + errorMessage);
+        return false;
+      }
+      
+      // إذا كان النموذج صحيحًا، قم بإظهار مؤشر التحميل وتعطيل الزر
+      const submitButton = document.querySelector('button[type="submit"]');
+      submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> جاري الحفظ...';
+      submitButton.disabled = true;
+      
+      // إظهار شريط التقدم لعملية الرفع إذا كان هناك فيديو
+      if (videoType === 'local' && videoFileInput.files.length > 0) {
+        videoUploadProgress.classList.remove('d-none');
+      }
+      
+      console.log("النموذج صالح، جاري الإرسال...");
+      return true;
+    }
+    
+    // تطبيق التغييرات المبدئية عند تحميل الصفحة
+    handleVideoTypeChange();
+    
+    // إضافة معالج الأحداث لتغيير نوع الفيديو
+    videoTypeSelect.addEventListener('change', handleVideoTypeChange);
+    
+    // إضافة معالج الأحداث لاختيار ملف الفيديو
+    if (videoFileInput) {
+      videoFileInput.addEventListener('change', handleVideoFileChange);
+    }
+    
+    // إضافة معالج الأحداث لاختيار صورة مصغرة
+    if (videoThumbnailInput) {
+      videoThumbnailInput.addEventListener('change', handleThumbnailChange);
+    }
+    
+    // إضافة معالج الأحداث للتحقق من النموذج قبل إرساله
+    const form = document.getElementById('editPortfolioForm');
+    if (form) {
+      form.addEventListener('submit', validateForm);
+    }
+  });
+</script>
+{% endblock %}

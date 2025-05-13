@@ -1,0 +1,285 @@
+/**
+ * تنسيقات الكاروسيل الأفقي اللانهائي
+ * Infinite Horizontal Carousel Styles
+ */
+
+/* تأثيرات النقر والتفاعل */
+@keyframes clickPulse {
+  0% { transform: scale(0.95); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* تأثير الوهج الإشعاعي للشريحة النشطة */
+@keyframes glowPulse {
+  0% { box-shadow: 0 20px 30px rgba(0, 0, 0, 0.45), 0 0 10px rgba(99, 102, 241, 0.3); }
+  50% { box-shadow: 0 20px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(99, 102, 241, 0.5); }
+  100% { box-shadow: 0 20px 30px rgba(0, 0, 0, 0.45), 0 0 10px rgba(99, 102, 241, 0.3); }
+}
+
+/* تأثير تموج الأمواج حول الشريحة النشطة */
+@keyframes activeWave {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+}
+
+/* تنسيق الشريحة النشطة - عند التحويم بالمؤشر */
+.horizontal-slide.active-slide {
+  z-index: 10;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45), 0 0 20px rgba(99, 102, 241, 0.4) !important;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  border-width: 2px;
+  border-style: solid;
+  border-image: linear-gradient(45deg, #6366f1, #a855f7) 1;
+  overflow: visible !important;
+  transform: translateY(-10px) scale(1.05) !important;
+}
+
+/* تأثير الصورة عند التحويم */
+.horizontal-slide.active-slide img {
+  transform: scale(1.1);
+  transition: all 0.4s ease-out;
+}
+
+/* توهج للصورة النشطة */
+.horizontal-slide.active-slide::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 18px;
+  background: transparent;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+  opacity: 0;
+  animation: glowPulseEffect 2s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes glowPulseEffect {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+/* حاوية القسم بالكامل */
+.horizontal-carousel-section {
+  position: relative;
+  padding: 3rem 0;
+  overflow: hidden;
+}
+
+/* حاوية الكاروسيل */
+.horizontal-carousel-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  padding: 0 1rem;
+}
+
+/* حاوية Swiper الرئيسية */
+.swiper.horizontal-carousel {
+  overflow: visible;
+  padding: 1.5rem 0.5rem;
+  margin: 0 -0.5rem;
+}
+
+/* شرائح الكاروسيل */
+.horizontal-carousel .swiper-slide {
+  height: auto;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* تحسين منحنى التأثير لحركة أكثر جاذبية */
+  transform-origin: center center;
+}
+
+/* بطاقة الكاروسيل */
+.horizontal-slide {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  /* نسبة أبعاد Instagram البالغة 4:5 (مثل 1080×1350) */
+  aspect-ratio: 4/5;
+  height: auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  transform: translateY(0);
+  perspective: 1000px;
+  will-change: transform, box-shadow;
+}
+
+/* تحسين مظهر الصورة وتأثيرات التحويم */
+.horizontal-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+  filter: none; /* إزالة التصفية للحفاظ على الجودة الأصلية للصور */
+}
+
+.horizontal-slide:hover {
+  transform: translateY(-15px) scale(1.03);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(99, 102, 241, 0.3);
+  border-color: rgba(168, 85, 247, 0.4);
+  z-index: 10;
+}
+
+.horizontal-slide:hover img {
+  transform: scale(1.1) rotate(1deg);
+  filter: none; /* إزالة التصفية عند التحويم أيضًا */
+}
+
+/* إزالة طبقة التفاصيل (overlay) تماماً */
+.horizontal-slide .slide-overlay {
+  display: none;
+}
+
+.horizontal-slide:hover .slide-overlay {
+  display: none;
+}
+
+/* تم إزالة أنماط العنوان والوصف حيث لن تظهر على الإطلاق */
+
+/* تم إزالة أنماط الزر */
+
+/* تخصيص أسهم التنقل */
+.horizontal-carousel .swiper-button-next,
+.horizontal-carousel .swiper-button-prev {
+  width: 45px;
+  height: 45px;
+  background: rgba(99, 102, 241, 0.75);
+  border-radius: 50%;
+  color: white;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(4px);
+  will-change: transform, box-shadow, background;
+}
+
+.horizontal-carousel .swiper-button-next:after,
+.horizontal-carousel .swiper-button-prev:after {
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.horizontal-carousel .swiper-button-next:hover,
+.horizontal-carousel .swiper-button-prev:hover {
+  background: rgba(168, 85, 247, 0.9);
+  transform: scale(1.15) translateY(-2px);
+  box-shadow: 0 6px 18px rgba(168, 85, 247, 0.4);
+}
+
+.horizontal-carousel .swiper-button-next:active,
+.horizontal-carousel .swiper-button-prev:active {
+  transform: scale(0.95);
+  transition-duration: 0.1s;
+}
+
+/* تخصيص نقاط التنقل */
+.horizontal-carousel .swiper-pagination {
+  bottom: -10px;
+  transform: translateY(100%);
+}
+
+.horizontal-carousel .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: rgba(99, 102, 241, 0.4);
+  opacity: 0.7;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin: 0 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.horizontal-carousel .swiper-pagination-bullet-active {
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  transform: scale(1.4);
+  opacity: 1;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.horizontal-carousel .swiper-pagination-bullet:hover {
+  background: rgba(168, 85, 247, 0.7);
+  transform: scale(1.2);
+}
+
+/* تحسين الكاروسيل على الأجهزة المختلفة */
+@media (min-width: 640px) {
+  .horizontal-slide {
+    /* الاعتماد على aspect-ratio بدلاً من ارتفاع ثابت */
+    transform: translateY(20px);
+    opacity: 1; /* الإبقاء على الشفافية كاملة */
+    transition: transform 0.7s ease;
+  }
+  
+  .horizontal-carousel .swiper-button-next,
+  .horizontal-carousel .swiper-button-prev {
+    opacity: 1; /* الإبقاء على الشفافية كاملة */
+  }
+}
+
+@media (min-width: 768px) {
+  .horizontal-slide {
+    /* زيادة حجم الظل في الأجهزة المتوسطة */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  }
+  
+  .horizontal-carousel {
+    padding: 2rem 0.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .horizontal-slide {
+    /* تحسين تأثيرات الأجهزة الكبيرة */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  }
+  
+  .horizontal-carousel .swiper-button-next,
+  .horizontal-carousel .swiper-button-prev {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .horizontal-carousel .swiper-button-next:after,
+  .horizontal-carousel .swiper-button-prev:after {
+    font-size: 20px;
+  }
+}
+
+/* تأكيد توافق اللغة العربية مع أسهم التنقل */
+html[dir="rtl"] .horizontal-carousel .swiper-button-next:after {
+  content: 'prev';
+}
+
+html[dir="rtl"] .horizontal-carousel .swiper-button-prev:after {
+  content: 'next';
+}
+
+/* توافق الشاشات الصغيرة */
+@media (max-width: 480px) {
+  .horizontal-slide {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border-width: 1px;
+  }
+  
+  .horizontal-carousel .swiper-button-next,
+  .horizontal-carousel .swiper-button-prev {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .horizontal-carousel .swiper-button-next:after,
+  .horizontal-carousel .swiper-button-prev:after {
+    font-size: 14px;
+  }
+  
+  .horizontal-carousel .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    margin: 0 4px;
+  }
+}

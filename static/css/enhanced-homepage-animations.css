@@ -1,0 +1,515 @@
+/**
+ * enhanced-homepage-animations.css - أنماط التأثيرات الحركية المحسنة للصفحة الرئيسية
+ * 
+ * تم إنشاؤه لموقع فراس للتصميم لإضافة تأثيرات أكثر سلاسة وانتقالات أكثر راحة للعين
+ */
+
+:root {
+  /* متغيرات التوقيت والمدة */
+  --animation-timing-bezier: cubic-bezier(0.19, 1, 0.22, 1);
+  --animation-timing-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --animation-timing-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  
+  /* متغيرات المدة الزمنية (بالثواني) */
+  --animation-duration-fast: 0.4s;
+  --animation-duration-normal: 0.7s;
+  --animation-duration-slow: 1.2s;
+  --animation-duration-very-slow: 2s;
+  
+  /* متغيرات الألوان المتدرجة */
+  --primary-gradient-start: #6366f1;
+  --primary-gradient-end: #a855f7;
+  --secondary-gradient-start: #1e293b;
+  --secondary-gradient-end: #0f172a;
+}
+
+/* خصائص عامة للانيميشن */
+html, body {
+  scroll-behavior: smooth !important;
+}
+
+/* تحسينات عامة للأداء */
+.smooth-transform,
+.parallax-element,
+.gestalt-element,
+.cursor-interactive,
+.staggered-hero-item,
+.animated-entrance,
+.blob,
+.floating-accent,
+.gradient-text {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* تأثيرات ظهور العناصر الرئيسية للصفحة */
+.eki-header {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--animation-duration-normal) var(--animation-timing-bezier),
+              transform var(--animation-duration-normal) var(--animation-timing-bezier);
+}
+
+.eki-header.reveal-hero {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* تأثيرات الظهور المتدرج للعناصر */
+.animated-entrance {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--animation-duration-normal) var(--animation-timing-bezier),
+              transform var(--animation-duration-normal) var(--animation-timing-bezier);
+}
+
+.animated-entrance.appear {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* تأثير ظهور متسلسل لعناصر البطل */
+.staggered-hero-item {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity var(--animation-duration-normal) var(--animation-timing-bezier),
+              transform var(--animation-duration-normal) var(--animation-timing-bezier);
+}
+
+.staggered-hero-item.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* تأثيرات الفقاعات المحسنة */
+.blob {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity var(--animation-duration-slow) var(--animation-timing-bezier),
+              transform var(--animation-duration-slow) var(--animation-timing-bezier),
+              filter var(--animation-duration-slow) var(--animation-timing-bezier);
+}
+
+.blob-visible {
+  opacity: 0.7;
+  transform: scale(1);
+}
+
+/* تحسين تأثير الفقاعات المتحركة للواقعية */
+@keyframes enhancedBlobFloat {
+  0% {
+    transform: translate(0, 0) scale(1);
+    filter: blur(80px);
+  }
+  30% {
+    transform: translate(-5px, -10px) scale(1.05);
+    filter: blur(85px);
+  }
+  50% {
+    transform: translate(-10px, 5px) scale(1.02);
+    filter: blur(75px);
+  }
+  70% {
+    transform: translate(8px, -7px) scale(0.98);
+    filter: blur(80px);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+    filter: blur(80px);
+  }
+}
+
+.blob-purple {
+  animation: enhancedBlobFloat 25s ease-in-out infinite;
+}
+
+.blob-blue {
+  animation: enhancedBlobFloat 30s ease-in-out infinite reverse;
+}
+
+.blob-cyan {
+  animation: enhancedBlobFloat 28s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* تأثير العناصر الطافية المتميزة */
+.floating-accent {
+  animation: floatingAccent 10s ease-in-out infinite;
+  display: inline-block;
+  will-change: transform;
+}
+
+@keyframes floatingAccent {
+  0% {
+    transform: translate(0, 0) rotate(0);
+  }
+  25% {
+    transform: translate(3px, -4px) rotate(0.5deg);
+  }
+  50% {
+    transform: translate(-4px, 2px) rotate(-0.8deg);
+  }
+  75% {
+    transform: translate(2px, -2px) rotate(0.3deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0);
+  }
+}
+
+/* تأثيرات النصوص المتدرجة المحسنة */
+.gradient-text {
+  background: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  position: relative;
+  display: inline-block;
+  transition: filter var(--animation-duration-normal) var(--animation-timing-bezier);
+}
+
+.gradient-text:hover {
+  filter: brightness(1.2) drop-shadow(0 0 8px rgba(99, 102, 241, 0.3));
+}
+
+.gradient-text::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  background: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end));
+  opacity: 0;
+  filter: blur(15px);
+  z-index: -1;
+  border-radius: 10px;
+  transform: scale(0.8);
+  transition: opacity var(--animation-duration-normal) var(--animation-timing-bezier),
+              transform var(--animation-duration-normal) var(--animation-timing-bezier);
+}
+
+.gradient-text:hover::before {
+  opacity: 0.3;
+  transform: scale(1);
+}
+
+/* تأثيرات عند التمرير */
+.parallax-element {
+  transition: transform var(--animation-duration-slow) var(--animation-timing-smooth);
+}
+
+.gestalt-element {
+  transition: transform var(--animation-duration-normal) var(--animation-timing-smooth),
+              opacity var(--animation-duration-normal) var(--animation-timing-smooth);
+}
+
+/* تأثيرات العناصر التفاعلية مع المؤشر */
+.cursor-interactive {
+  transition: transform var(--animation-duration-normal) var(--animation-timing-smooth);
+}
+
+.cursor-interactive.attract:hover {
+  transform: scale(1.05);
+}
+
+.cursor-interactive.repel:hover {
+  transform: scale(0.98);
+}
+
+/* تأثيرات التكبير والتصغير المحسنة */
+.hover-scale {
+  transition: transform var(--animation-duration-fast) var(--animation-timing-bounce),
+              box-shadow var(--animation-duration-fast) var(--animation-timing-smooth);
+}
+
+.hover-scale:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 15px rgba(99, 102, 241, 0.2);
+}
+
+/* تأثيرات العمق والإضاءة */
+.depth-effect {
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--animation-duration-normal) var(--animation-timing-bezier);
+}
+
+.depth-effect::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15), transparent 70%);
+  opacity: 0;
+  z-index: 1;
+  transition: opacity var(--animation-duration-normal) var(--animation-timing-bezier);
+  pointer-events: none;
+}
+
+.depth-effect:hover::before {
+  opacity: 1;
+}
+
+/* تأثيرات انتقال الخلفية عند التمرير */
+body {
+  transition: background-color var(--animation-duration-very-slow) var(--animation-timing-smooth);
+}
+
+body.scrolled-down {
+  background-color: #0a0a20; /* لون داكن أكثر عند التمرير لأسفل */
+}
+
+/* تأثيرات خاصة بالنصوص عند التمرير */
+.animate-on-scroll {
+  opacity: 0.7;
+  transform: translateY(10px);
+  transition: opacity var(--animation-duration-normal) var(--animation-timing-bezier),
+              transform var(--animation-duration-normal) var(--animation-timing-bezier);
+}
+
+.animate-on-scroll.text-animated {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* تأثيرات البطاقات والعناصر المميزة */
+.feature-card {
+  transition: transform var(--animation-duration-normal) var(--animation-timing-bezier),
+              box-shadow var(--animation-duration-normal) var(--animation-timing-bezier),
+              background-color var(--animation-duration-normal) var(--animation-timing-bezier);
+  overflow: hidden;
+  position: relative;
+}
+
+.feature-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+                              rgba(255, 255, 255, 0) 0%,
+                              rgba(255, 255, 255, 0.1) 50%,
+                              rgba(255, 255, 255, 0) 100%);
+  transition: left 0.6s var(--animation-timing-bezier);
+  pointer-events: none;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 0 15px rgba(99, 102, 241, 0.2);
+}
+
+.feature-card:hover::after {
+  left: 100%;
+}
+
+/* تحسين البراق (الشاين) لتكون أكثر نعومة */
+@keyframes smoothShine {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    left: 200%;
+    opacity: 0;
+  }
+}
+
+.shine-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-effect::after {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -100%;
+  width: 70%;
+  height: 120%;
+  background: linear-gradient(90deg, 
+                              rgba(255, 255, 255, 0) 0%,
+                              rgba(255, 255, 255, 0.2) 50%,
+                              rgba(255, 255, 255, 0) 100%);
+  transform: rotate(25deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.shine-effect:hover::after {
+  animation: smoothShine 1.5s var(--animation-timing-bezier);
+}
+
+/* تحسين الشبكة في الخلفية */
+@keyframes smoothGridMove {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(40px);
+  }
+}
+
+.grid-pattern {
+  animation: smoothGridMove 30s linear infinite;
+  opacity: 0.12;
+  transition: opacity 1s var(--animation-timing-bezier);
+}
+
+body.scrolled-down .grid-pattern {
+  opacity: 0.08;
+}
+
+/* تأثيرات معززة لعناصر الكاروسيل */
+.carousel-slide {
+  transition: transform var(--animation-duration-normal) var(--animation-timing-bezier),
+              opacity var(--animation-duration-normal) var(--animation-timing-bezier);
+}
+
+.carousel-slide.active {
+  z-index: 2;
+}
+
+.carousel-slide:not(.active) {
+  opacity: 0.7;
+  transform: scale(0.95);
+}
+
+/* تفاعل مؤشر حركي للحاويات الكبيرة */
+@media (min-width: 768px) {
+  .interactive-container {
+    transition: transform var(--animation-duration-normal) var(--animation-timing-bezier);
+    perspective: 1000px;
+  }
+  
+  .interactive-container:hover {
+    transform: translateZ(20px);
+  }
+}
+
+/* تأثيرات مختلفة للأجهزة المحمولة */
+@media (max-width: 767px) {
+  :root {
+    --animation-duration-fast: 0.3s;
+    --animation-duration-normal: 0.5s;
+    --animation-duration-slow: 0.8s;
+  }
+  
+  /* تقليل كثافة التأثيرات على الأجهزة المحمولة */
+  .parallax-element,
+  .gestalt-element,
+  .cursor-interactive {
+    transform: none !important;
+    transition: opacity var(--animation-duration-normal) var(--animation-timing-bezier);
+  }
+  
+  .blob-visible {
+    opacity: 0.5; /* تقليل الشفافية على الأجهزة المحمولة */
+  }
+}
+
+/* تأثير الانتقال البطيء للصورة الرئيسية */
+.hero-image-container {
+  overflow: hidden;
+  border-radius: 12px;
+  position: relative;
+}
+
+.hero-image {
+  transition: transform var(--animation-duration-slow) var(--animation-timing-bezier),
+              filter var(--animation-duration-slow) var(--animation-timing-bezier);
+}
+
+.hero-image-container:hover .hero-image {
+  transform: scale(1.05);
+  filter: brightness(1.1) contrast(1.05);
+}
+
+.hero-image-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.2), rgba(0,0,0,0));
+  opacity: 0;
+  transition: opacity var(--animation-duration-normal) var(--animation-timing-bezier);
+  pointer-events: none;
+}
+
+.hero-image-container:hover::after {
+  opacity: 1;
+}
+
+/* توهج نبضي للعناصر المميزة */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+  50% {
+    box-shadow: 0 0 20px 6px rgba(99, 102, 241, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+}
+
+.pulse-glow {
+  animation: pulseGlow 3s var(--animation-timing-bezier) infinite;
+}
+
+/* تأثير انتقال سلس للأزرار */
+.smooth-button {
+  position: relative;
+  overflow: hidden;
+  transition: all var(--animation-duration-fast) var(--animation-timing-bezier);
+  z-index: 1;
+}
+
+.smooth-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to right, 
+                              rgba(99, 102, 241, 0.8), 
+                              rgba(168, 85, 247, 0.8));
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transform: scale(0.96, 0.9);
+  transition: all var(--animation-duration-fast) var(--animation-timing-bezier);
+}
+
+.smooth-button:hover::before {
+  opacity: 1;
+  transform: scale(1, 1);
+}
+
+.smooth-button:active {
+  transform: scale(0.97);
+}
+
+/* تأثير النبض الناعم للصور المميزة */
+@keyframes softPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.soft-pulse {
+  animation: softPulse 5s var(--animation-timing-bezier) infinite;
+  will-change: transform;
+}
