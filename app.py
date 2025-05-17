@@ -7,7 +7,8 @@ import string
 import base64
 import traceback
 
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, abort, session, g
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, abort, session, g, current_app
+from cloudinary_uploader import upload_image_to_cloudinary
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from functools import wraps
 from flask_sqlalchemy import SQLAlchemy
@@ -38,8 +39,18 @@ from messaging_routes import messaging_bp
 from live_visitors import init_live_visitors_tracking
 from download_routes import download_bp
 
-# Configure logging
-logging.basicConfig(level=logging.DEBUG)
+# استيراد أنظمة الأتمتة
+from monitoring import MonitoringSystem
+from tasks import TaskScheduler
+
+# تكوين التطبيق
+app = Flask(__name__)
+
+# تهيئة أنظمة الأتمتة
+monitoring = MonitoringSystem(app)
+scheduler = TaskScheduler(app)
+
+# تكوين السجل
 
 # Setup Flask app
 from database import db
@@ -280,47 +291,13 @@ app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB max-limit
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def secure_file_save(file, filename, subfolder=''):
-    """
-    حفظ ملف بشكل آمن في المجلد المحدد
-    
-    Args:
-        file: ملف المُرفق
-        filename: اسم الملف
-        subfolder: المجلد الفرعي داخل uploads (مثل 'services' أو 'projects')
-        
-    Returns:
-        المسار النسبي للملف المحفوظ
-    
-    Raises:
-        ValueError: إذا كان نوع الملف غير مسموح به
-    """
     if not allowed_file(filename):
-        raise ValueError('نوع الملف غير مسموح به')
-
+        return None
     secure_name = secure_filename(filename)
-    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+    timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
     final_filename = f"{timestamp}_{secure_name}"
-
-    # إنشاء المجلد الرئيسي للرفع إذا لم يكن موجودًا
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    
-    # إذا تم تحديد مجلد فرعي، قم بإنشائه أيضًا
-    upload_path = app.config['UPLOAD_FOLDER']
-    if subfolder:
-        upload_path = os.path.join(upload_path, subfolder)
-        os.makedirs(upload_path, exist_ok=True)
-        
-    file_path = os.path.join(upload_path, final_filename)
-    file.save(file_path)
-    
-    # إرجاع المسار النسبي بالنسبة للملف الرئيسي
-    if subfolder:
-        relative_path = f"/static/uploads/{subfolder}/{final_filename}"
-    else:
-        relative_path = f"/static/uploads/{final_filename}"
-    app.logger.debug(f"تم حفظ الملف في {file_path}, المسار للـURL: {relative_path}")
-    return relative_path
-
+    image_url = upload_image_to_cloudinary(file.stream, public_id=final_filename, folder=subfolder)
+    return image_url
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -3926,4 +3903,12 @@ def system_diagnostic():
 # End of implementation
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    try:
+        # بدء المهام المجدولة
+        scheduler.init_app(app)
+        
+        # بدء التطبيق
+        app.run(debug=True, use_reloader=False)  # تعطيل إعادة التحميل التلقائي لتجنب تكرار المهام
+    except Exception as e:
+        monitoring.send_telegram_alert(f"❌ فشل تشغيل التطبيق: {str(e)}")
+        raise
