@@ -1,0 +1,42 @@
+FROM python:3.10-slim
+
+# تعيين متغيرات البيئة
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app \
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    POETRY_VERSION=1.6.1
+
+# تثبيت المتطلبات الأساسية
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# إنشاء مستخدم التطبيق
+RUN useradd -m appuser
+
+# تعيين مسار العمل
+WORKDIR /app
+
+# نسخ ملفات المشروع
+COPY --chown=appuser:appuser . .
+
+
+# تثبيت Poetry
+RUN pip install "poetry==$POETRY_VERSION"
+
+# تثبيت التبعيات
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-interaction --no-ansi --no-root
+
+# تغيير ملكية الملفات لمستخدم التطبيق
+RUN chown -R appuser:appuser /app
+
+# تغيير المستخدم
+USER appuser
+
+# الأمر الافتراضي
+CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
